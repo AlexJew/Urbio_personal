@@ -1,11 +1,7 @@
 import marimo
 
 __generated_with = "0.9.27"
-app = marimo.App(
-    width="medium",
-    layout_file="layouts/app.grid.json",
-    css_file="assets/custom.css",
-)
+app = marimo.App(width="medium", css_file="assets/custom.css")
 
 
 @app.cell(hide_code=True)
@@ -24,7 +20,7 @@ def _():
         """Convert column names of a DataFrame to snake_case inplace."""
         df.columns = (
             df.columns
-            .str.replace(r'\(.*?\)', '', regex=True)  # Remove content inside parentheses
+            .str.replace(r'\s*\([^)]*\)\s*$', '', regex=True)  # Remove content inside parentheses
             .str.strip()  # Remove extra spaces left after removing parentheses
             .str.lower()  # Convert to lowercase
             .str.replace(r'[^a-z0-9]+', '_', regex=True)  # Replace non-alphanumeric characters with underscores
@@ -91,12 +87,6 @@ def _(buildings_file_button, mo, systems_file_button):
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md("""### Reading the files content""")
-    return
-
-
-@app.cell(hide_code=True)
 def _(
     all_files_uploaded,
     buildings_file_button,
@@ -113,42 +103,38 @@ def _(
     systems = pd.read_csv(io.BytesIO(systems_file_button.value[0].contents))
 
     # Present files as accordion
-    mo.accordion(
-        {"Original buildings file": buildings,
-        "Original systems file": systems}
+    mo.vstack(
+        [
+            mo.md("### Reading the files content"),
+             mo.accordion(
+                {"Original buildings file": buildings,
+                "Original systems file": systems}
+            )   
+        ]
     )
     return buildings, systems
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""### Renaming the columns of the files""")
-    return
-
-
 @app.cell
 def _(buildings, mo, systems, to_snake_case_inplace):
-
-
     # Convert the column names
     to_snake_case_inplace(buildings)
     to_snake_case_inplace(systems)
 
     # Present files as accordion
-    mo.accordion(
-        {"New buildings file": buildings,
-         "New systems file": systems}
+    mo.vstack(
+        [
+            mo.md("### Renaming the columns of the files"),
+            mo.accordion(
+                {"New buildings file": buildings,
+                 "New systems file": systems}
+            )
+        ]
     )
     return
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""### Creating Building type and Dataset dataframes""")
-    return
-
-
-@app.cell(hide_code=True)
+@app.cell
 def _(pd, to_snake_case_inplace):
     # Creating dataframes from Building type and Dataset (that will be used to expand the dataframe buildings)
     # ============================
@@ -165,59 +151,32 @@ def _(pd, to_snake_case_inplace):
     emissions_factor_df = pd.read_csv(
         "assets/Emissions factor table 1.csv", sep=";"
     )
+
     to_snake_case_inplace(emissions_factor_df)
     return building_type_df, emissions_factor_df, energy_systems_df
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""## Data expansion""")
-    return
-
-
-@app.cell(hide_code=True)
-def cell_11(building_type_df, buildings, mo):
+@app.cell
+def cell_11(building_type_df, buildings):
     # Create an anchor
     anchor_cell_11 = None
 
-    # Expand buildings dataframes
+    # Create the data frame for generation of the graph "Expanded buildings file"
 
-    # ========= Buildings =========
-
-    # Add the 'building_sector' and 'parent_type' columns to buildings
-
-    try:
-        buildings.drop(columns=['parent_type','building_sector'], inplace=True)
-    except KeyError:
-        pass
-
-    print(buildings.columns.to_list())
-    print(building_type_df.columns.to_list())
+    # Expand the buildings dataframe with the buildings sector
     buildings[['building_sector','parent_type']] = buildings.merge(building_type_df, how="left", on="building_type")[['building_sector','parent_type']]
-
-    # Fill missing values with "Unassigned" using explicit assignment - SHOULD I DELETE THAT? (IF SO, THEN I NEED TO CHANGE THE PART ON FINAL ENERGY DEMAND)
-    #buildings["parent_type"] = buildings["parent_type"].fillna("Unassigned")
-    #buildings["building_sector"] = buildings["building_sector"].fillna("Unassigned")
 
     # Determine if "Construction_period" contains ">" (returns True/False)
     buildings["greater_than_construction_period"] = buildings["construction_period"].astype(str).str.contains(">", na=False)
-
-    # Display the DataFrame
-    mo.accordion(
-        {
-            "Expanded buildings file": mo.ui.table(buildings, selection=None, show_column_summaries=False)
-        }
-    )
     return (anchor_cell_11,)
 
 
-@app.cell(hide_code=True)
+@app.cell
 def cell_12(
     anchor_cell_11,
     buildings,
     emissions_factor_df,
     energy_systems_df,
-    mo,
     systems,
 ):
     # Link to anchor of cell 11
@@ -226,11 +185,9 @@ def cell_12(
     # Create anchor of cell 12
     anchor_cell_12 = None
 
-    # Expand systems dataframes
+    # Create the dataframe for generation of the graph "Expanded system files"
 
-    # ========= Systems =========
-
-    # 1. Add e≠rgycarrierenergy_carrier from e≠rgysystemsdfenergy_systems_df using systemtypesystem_type
+    # 1. Add energycarrier from e≠rgysystems_df using system_type
     try:
         systems.drop(columns=['energy_carrier'], inplace=True)
     except KeyError:
@@ -277,24 +234,15 @@ def cell_12(
                                               how="left", 
                                               left_on="building_id", 
                                               right_on="building_id")['building_sector']
-
-    # Display the DataFrame
-    mo.accordion(
-        {
-            "Expanded systems file": mo.ui.table(systems, selection=None, show_column_summaries=False)
-        }
-    )
     return anchor_cell_12, fuel_cols
 
 
-@app.cell(hide_code=True)
-def cell_13(anchor_cell_11, buildings, mo, pd):
+@app.cell
+def cell_13(anchor_cell_11, buildings, pd):
     # Link to anchor of cell 11
     _ = anchor_cell_11
 
-    # Create dataframes for graph generation
-
-    # ========= Construction periods =========
+    # Create the dataframe for generation of the graph "Construction periods"
 
     # Provide values for "construction_periods"
     construction_periods_values = ["", "1200-1918", "1919-1948", "1949-1978", "1979-1990", 
@@ -319,22 +267,15 @@ def cell_13(anchor_cell_11, buildings, mo, pd):
         lambda x: buildings.loc[buildings["greater_than_construction_period"] == True].shape[0]
         if ">" in x else buildings.loc[(buildings["construction_period"] == x) & (buildings["building_id"].notna())].shape[0]
     )
-
-    # Display the DataFrame
-    mo.accordion(
-        {
-            "Construction periods": mo.ui.table(construction_periods_df, selection=None, show_column_summaries=False)
-        }
-    )
     return construction_periods_df, construction_periods_values
 
 
-@app.cell(hide_code=True)
-def _(anchor_cell_11, buildings, mo, pd):
+@app.cell
+def _(anchor_cell_11, buildings, pd):
     # Link to anchor of cell 11
     _ = anchor_cell_11
 
-    # ========= Heat demand according to Building sector =========
+    # Create the dataframe for generation of the graph "Heat demand according to building sector"
 
     # Provide values for "building_sector"
     unique_building_sectors = buildings["building_sector"].dropna().unique()
@@ -376,24 +317,15 @@ def _(anchor_cell_11, buildings, mo, pd):
     heat_demand_building_sector_df["hot_water_demand"] = heat_demand_building_sector_df["building_sector"].map(
         buildings.groupby("building_sector")["domestic_hot_water_demand"].sum()
     ).fillna(0).div(1_000_000).round(1)
-
-    # Display the DataFrame
-    mo.accordion(
-        {
-            "Heat demand according to Building sector": mo.ui.table(heat_demand_building_sector_df, selection=None, show_column_summaries=False)
-        }
-    )
     return cols, heat_demand_building_sector_df, unique_building_sectors
 
 
 @app.cell(hide_code=True)
-def _(anchor_cell_11, buildings, mo, pd):
+def _(anchor_cell_11, buildings, pd):
     # Link to anchor of cell 11
     _ = anchor_cell_11
 
-    # Create dataframes for graph generation
-
-    # ========= Heat demand according to Parent type ========= 
+    # Create dataframes for the generation of the graph "Heat demand according to parent type"
 
     # Provide values for "parent_type"
     unique_parent_types = buildings["parent_type"].dropna().unique()
@@ -440,24 +372,15 @@ def _(anchor_cell_11, buildings, mo, pd):
     heat_demand_parent_type_df["rank"] = heat_demand_parent_type_df["total_heat_demand"].rank(
         method="min", ascending=False
     ).fillna("").astype(str)  # Convert NaN ranks to empty strings
-
-    # Display the DataFrame
-    mo.accordion(
-        {
-            "Heat demand according to Parent type": mo.ui.table(heat_demand_parent_type_df, selection=None, show_column_summaries=False)
-        }
-    )
     return column, heat_demand_parent_type_df, unique_parent_types
 
 
 @app.cell(hide_code=True)
-def cell_16(anchor_cell_12, mo, np, pd, systems):
+def cell_16(anchor_cell_12, np, pd, systems):
     # Link to anchor of cell 12
     _ = anchor_cell_12
 
-    # Create dataframes for graph generation
-
-    # ========= Final energy demand per building sector and energy carrier ========= TO CHANGE : WRONG VALUES. I THINK IT IS BECAUSE OF HOW Commercial and traffic, Residential etc are written in the dataframes systems and buildings
+    # Create dataframes for the generation of the graph "Final energy demand per building sector and energy carrier"
 
     # Convert string "nan" to actual NaN values
     systems["building_sector"] = systems["building_sector"].replace("nan", np.nan)
@@ -506,13 +429,6 @@ def cell_16(anchor_cell_12, mo, np, pd, systems):
     # Compute the "relative" column
     total_energy = energy_consumption_df.loc[energy_consumption_df["energy_carriers"] == "Total", "total"].values[0]
     energy_consumption_df["relative"] = energy_consumption_df["total"] / total_energy
-
-    # Display the DataFrame
-    mo.accordion(
-        {
-            "Final energy demand per building sector and energy carrier": mo.ui.table(energy_consumption_df, selection=None, show_column_summaries=False)
-        }
-    )
     return (
         energy_consumption_df,
         sector,
@@ -524,21 +440,8 @@ def cell_16(anchor_cell_12, mo, np, pd, systems):
 
 
 @app.cell(hide_code=True)
-def _():
-    # Create dataframes for graph generation
-
-    # ========= GHG emissions per building sector and energy carrier ========= TO DO (haven't done cause same as previous and still problems)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, pd, systems):
-    # Create dataframes for graph generation
-
-    # ========= Energy systems =========
-
-    # Create heating_system_type_df
-    print(systems.columns.to_list())
+def _(pd, systems):
+    # Create dataframes for generation of the graph "Energy systems"
     heating_system_type_df = pd.DataFrame({"system_type": systems["system_type"].dropna().unique()})
 
     # Add "min" and "max" rows
@@ -568,13 +471,6 @@ def _(mo, pd, systems):
                     (systems["installed_system_size"] > min_val) &
                     (systems["installed_system_size"] <= max_val)
                 ].shape[0]  # Count matching rows
-
-    # Display the DataFrame
-    mo.accordion(
-        {
-            "Energy systems": mo.ui.table(heating_system_type_df, selection=None, show_column_summaries=False)
-        }
-    )
     return (
         col,
         heating_system_type_df,
@@ -586,16 +482,13 @@ def _(mo, pd, systems):
 
 
 @app.cell(hide_code=True)
-def _(building_type_df, buildings, mo):
-    # Create dataframes for graph generation
-
-    # ========= Heat demand according to building type =========
+def _(building_type_df, buildings):
+    # Create dataframes for the generation of the graph "Heat demand according to building type"
 
     # Extract unique building types & sectors from "Building type" DataFrame
     heat_demand_building_type_df = building_type_df[["building_sector", "building_type"]].drop_duplicates()
 
     # Compute energy reference area per building type
-    print(buildings.columns.to_list())
     energy_reference_area = buildings.groupby("building_type")["energy_reference_area"].sum().reset_index()
 
     # Step 3: Compute building counts per building type
@@ -617,17 +510,6 @@ def _(building_type_df, buildings, mo):
 
     # Remove rows where building_counts is 0
     heat_demand_building_type_df = heat_demand_building_type_df[heat_demand_building_type_df["building_counts"] > 0]
-
-    # Display the DataFrame
-    mo.accordion(
-        {
-            "Heat demand according to Building type": mo.ui.table(
-                heat_demand_building_type_df.reset_index(drop=True),  # <-- Reset index here
-                selection=None,
-                show_column_summaries=False
-            )
-        }
-    )
     return (
         building_counts,
         energy_reference_area,
@@ -635,15 +517,52 @@ def _(building_type_df, buildings, mo):
     )
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Generate your graphs""")
+@app.cell
+def __(
+    buildings,
+    construction_periods_df,
+    energy_consumption_df,
+    heat_demand_building_sector_df,
+    heat_demand_building_type_df,
+    heat_demand_parent_type_df,
+    mo,
+    systems,
+):
+    # Display the DataFrame
+    mo.vstack(
+        [
+            mo.md("## </br> Data expansion"),
+            mo.md('Here are the expanded data tables'),
+            mo.accordion(
+                {
+                    "Expanded buildings file": mo.ui.table(buildings, selection=None, show_column_summaries=False),
+                    "Expanded systems file": mo.ui.table(systems, selection=None, show_column_summaries=False),
+                    "Construction periods": mo.ui.table(construction_periods_df, selection=None, show_column_summaries=False),
+                    "Heat demand according to building sector": mo.ui.table(heat_demand_building_sector_df, selection=None, show_column_summaries=False),
+                    "Heat demand according to Parent type": mo.ui.table(heat_demand_parent_type_df, selection=None, show_column_summaries=False),
+                    "Final energy demand per building sector and energy carrier": mo.ui.table(energy_consumption_df, selection=None, show_column_summaries=False),
+                    "Heat demand according to Building type": mo.ui.table(heat_demand_building_type_df.reset_index(drop=True), selection=None, show_column_summaries=False)
+                }
+            )
+        ]
+    )
+
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md("""Generate the same graphs as used in the reporting template""")
+def _(all_files_uploaded, mo):
+    # Stopping until all files have been uploaded
+    mo.stop(not all_files_uploaded)
+
+    # Output the text
+    mo.vstack(
+        [
+            mo.md("## </br> Generate your graphs"),
+            mo.md("""Generate the same graphs as used in the reporting template""")
+        ]
+    )
+
     return
 
 
