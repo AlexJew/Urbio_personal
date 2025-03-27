@@ -1,0 +1,13 @@
+﻿Energy systems;Energy carrier;Efficiency ratio
+Gas boiler;Natural gas;90%
+Oil boiler;Fuel oil;90%
+Electric heating;Electricity;100%
+Ground source heat pump;Electricity;400%
+Water source heat pump;Electricity;400%
+Air source heat pump;Electricity;300%
+Heat transfer station;District heat;100%
+Wood logs boiler;Wood logs;90%
+Wood pellets boiler;Wood pellets;90%
+Wood chips boiler;Wood chips;90%
+Biogas boiler;Biogas;90%
+Chiller;Electricity;1300%

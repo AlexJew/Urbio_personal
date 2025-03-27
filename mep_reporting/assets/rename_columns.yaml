@@ -1,0 +1,268 @@
+mappings:
+  Building_id:
+  - Building ID (Urbio) 
+  House_number:
+  - House number
+  Postal_code:
+  - Postal code
+  X_coordinate:
+  - x-ccordinate
+  Y_coordinate:
+  - y-coordinate
+  Building_type:
+  - Building type
+  Year_of_construction:
+  - Year of construction
+  Year_of_renovation:
+  - Year of renovation
+  Construction_period:
+  - Construction period
+  Height:
+  - Height (m)
+  Gross_floor_area:
+  - "Gross floor area (m\xB2)"
+  Net_floor_area:
+  - "Net floor area (m\xB2)"
+  Energy_reference_area:
+  - "Energy reference area (m\xB2)"
+  Public_building:
+  - Public building
+  Energy_certificate:
+  - Energy certificate
+  Heat_supply_temperature:
+  - "Heat supply temperature (\xB0C)"
+  Self_sufficiency:
+  - Self-sufficiency (%)
+  Inv_subs_energy_systems:
+  - Inv. subs. energy systems (CHF)
+  Cost_refurb:
+  - Cost refurb. (CHF)
+  Ann_cost_refurb:
+  - Ann. cost refurb. (CHF/y)
+  Inv_cost_energy:
+  - Inv. cost energy (CHF)
+  Op_cost_energy:
+  - Op. cost energy (CHF/y)
+  Maint_cost_energy_systems:
+  - Maint. cost energy systems (CHF/y)
+  Annual_energy_costs:
+  - Annual energy costs (CHF/y)
+  Annual_energy_revenues:
+  - Annual energy revenues (CHF/y)
+  Expend_surplus_op:
+  - Expend. surplus op (CHF/y)
+  Annual_savings:
+  - Annual savings (CHF/y)
+  Payback_period:
+  - Payback period (y)
+  Total_primary_energy:
+  - Total - Primary energy (kWh/y)
+  Total_annual_energy_import:
+  - Total - Annual energy import (kWh/y)
+  Total_annual_energy_export:
+  - Total - Annual energy export (kWh/y)
+  Total_annual_energy_costs:
+  - Total - Annual energy costs (CHF/y)
+  Total_annual_energy_revenues:
+  - Total - Annual energy revenues (CHF/y)
+  Total_GHG_emissions:
+  - Total - GHG emissions (kg-CO2-eq/y)
+  Total_heat_demand:
+  - Total heat demand (kWh/y)
+  Spec_total_heat_demand:
+  - "Spec. total heat demand (kWh/m\xB2/y)"
+  Space_heating_demand:
+  - Space heating demand (kWh/y)
+  Spec_space_heating_demand:
+  - "Spec. space heating demand (kWh/m\xB2/y)"
+  Domestic_hot_water_demand:
+  - Domestic hot water demand (kWh/y)
+  Spec_hot_water_demand:
+  - "Spec. hot water demand (kWh/m\xB2/y)"
+  Space_cooling_demand:
+  - Space cooling demand (kWh/y)
+  Spec_total_cooling_demand:
+  - "Spec. total cooling demand (kWh/m\xB2/y)"
+  Electricity_demand:
+  - Electricity demand (kWh/y)
+  Spec_electricity_demand:
+  - "Spec. electricity demand (kWh/m\xB2/y)"
+  Electricity_demand_for_appliances:
+  - Electricity demand for appliances (kWh/y)
+  Spec_electricity_demand_for_appliances:
+  - "Spec. electricity demand for appliances (kWh/m\xB2/y)"
+  Electricity_demand_for_heating:
+  - Electricity demand for heating (kWh/y)
+  Spec_electricity_demand_for_heating:
+  - "Spec. electricity demand for heating (kWh/m\xB2/y)"
+  Electricity_demand_for_cooling:
+  - Electricity demand for cooling (kWh/y)
+  Spec_electricity_demand_for_cooling:
+  - "Spec. electricity demand for cooling (kWh/m\xB2/y)"
+  Total_roof_area:
+  - "Total roof area (m\xB2)"
+  Availalbe_roof_area:
+  - "Available roof area (m\xB2)"
+  Free_roof_area:
+  - "Free roof area (m\xB2)"
+  Potential_roof_area:
+  - "Potential roof area (m\xB2)"
+  Irradiation_potential_area:
+  - Irradiation (potential area) (kWh/y)
+  Avg_irradiation_potential_area:
+  - "Avg. irradiation (pot. area) (kWh/m\xB2/y)"
+  Potential_PV_production:
+  - Potential PV production (kWh/y)
+  Potential_PV_capacity:
+  - Potential PV capacity (kW)
+  Existing_PV_capacity:
+  - Existing PV capacity (kW)
+  System_id:
+  - System ID (Urbio)
+  Building_id:
+  - Building ID (Urbio)
+  - Street
+  House_number:
+  - House number
+  Postal_code:
+  - Postal code
+  City:
+  - City
+  State:
+  - State
+  X_coordinate:
+  - x-coordinate
+  Y_coordinate:
+  - y-coordinate
+  Supplies_to:
+  - Supplies to
+  System_type:
+  - System type
+  Installed_system_size:
+  - Installed system size (kW)
+  Occupied_roof_area:
+  - "Occupied roof area (m\xB2)"
+  Year_of_manufacture:
+  - Year of manufacture
+  Year_of_installation:
+  - Year of installation
+  Supplied_end_uses:
+  - Supplied end uses
+  Thermal_efficiency:
+  - Thermal efficiency (%)
+  Electric_efficiency:
+  - Electric efficiency (%)
+  Annual_cop:
+  - Annual COP
+  Electricity_demand:
+  - Electricity demand (kWh/y)
+  Electricity_supply:
+  - Electricity supply (kWh/y)
+  Gas_consumption:
+  - Gas consumption (kWh/y)
+  Oil_consumption:
+  - Oil consumption (kWh/y)
+  Wodd_chips_consumption:
+  - Wood chips consumption (kWh/y)
+  Wood_logs_consumption:
+  - Wood logs consumption (kWh/y)
+  Pellets_consumption:
+  - Pellets consumption (kWh/y)
+  Heat_demand:
+  - Heat demand (kWh/y)
+  Heat_supply:
+  - Heat supply (kWh/y)
+  Cold_supply:
+  - Cold supply (kWh/y)
+  Share_heat_demand:
+  - Share heat demand (%)
+  Share_electricity_demand:
+  - Share electricity demand (%)
+  Investment_cost:
+  - Investment cost (CHF)
+  Annualized_inv_cost:
+  - Annualized inv. cost (CHF/y)
+  Maintenance_cost:
+  - Maintenance cost (CHF/y)
+  Inv_subs_energy_systems:
+  - Inv. subs. energy systems (CHF)
+  Annualized_inv_subsidies:
+  - Annualized inv. subsidies (CHF/y)
+  System_id:
+  - System ID (Urbio)
+  Building_id:
+  - Building ID (Urbio)
+  Street:
+  - Street
+  House_number:
+  - House number
+  Postal_code:
+  - Postal code
+  City:
+  - City
+  State:
+  - State
+  X_coordinate:
+  - x-coordinate
+  Y_coordinate:
+  - y-coordinate
+  Supplies_to:
+  - Supplies to
+  System_type:
+  - System type
+  Installed_system_size:
+  - Installed system size (kW)
+  Occupied_roof_area:
+  - "Occupied roof area (m\xB2)"
+  Year_of_manufacture:
+  - Year of manufacture
+  Year_of_installation:
+  - Year of installation
+  Supplied_end_uses:
+  - Supplied end uses
+  Thermal_efficiency:
+  - Thermal efficiency (%)
+  Electric_efficiency:
+  - Electric efficiency (%)
+  Annual_cop:
+  - Annual COP
+  Electricity_demand:
+  - Electricity demand (kWh/y)
+  Electricity_supply:
+  - Electricity supply (kWh/y)
+  Gas_consumption:
+  - Gas consumption (kWh/y)
+  Oil_consumption:
+  - Oil consumption (kWh/y)
+  Wodd_chips_consumption:
+  - Wood chips consumption (kWh/y)
+  Wood_logs_consumption:
+  - Wood logs consumption (kWh/y)
+  Pellets_consumption:
+  - Pellets consumption (kWh/y)
+  Heat_demand:
+  - Heat demand (kWh/y)
+  Heat_supply:
+  - Heat supply (kWh/y)
+  Cold_supply:
+  - Cold supply (kWh/y)
+  Share_heat_demand:
+  - Share heat demand (%)
+  Share_electricity_demand:
+  - Share electricity demand (%)
+  Investment_cost:
+  - Investment cost (CHF)
+  Annualized_inv_cost:
+  - Annualized inv. cost (CHF/y)
+  Maintenance_cost:
+  - Maintenance cost (CHF/y)
+  Inv_subs_energy_systems:
+  - Inv. subs. energy systems (CHF)
+  Annualized_inv_subsidies:
+  - Annualized inv. subsidies (CHF/y)
+
+
+
+
+
+
