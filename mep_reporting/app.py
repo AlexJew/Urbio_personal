@@ -19,7 +19,17 @@ def _():
     import numpy as np
     import matplotlib.pyplot as plt
 
-    from utils import to_snake_case_inplace
+    # Define function for converting column names as snake case
+    def to_snake_case_inplace(df): 
+        """Convert column names of a DataFrame to snake_case inplace."""
+        df.columns = (
+            df.columns
+            .str.replace(r'\(.*?\)', '', regex=True)  # Remove content inside parentheses
+            .str.strip()  # Remove extra spaces left after removing parentheses
+            .str.lower()  # Convert to lowercase
+            .str.replace(r'[^a-z0-9]+', '_', regex=True)  # Replace non-alphanumeric characters with underscores
+            .str.strip('_')  # Remove leading/trailing underscores
+        )
     return alt, io, mo, np, pd, plt, to_snake_case_inplace, yaml
 
 
