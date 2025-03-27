@@ -87,7 +87,17 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(buildings_file_button, io, mo, pd, systems_file_button):
+def _(
+    all_files_uploaded,
+    buildings_file_button,
+    io,
+    mo,
+    pd,
+    systems_file_button,
+):
+    # Stopping until all files have been uploaded
+    mo.stop(not all_files_uploaded)
+
     # Read the files
     buildings = pd.read_csv(io.BytesIO(buildings_file_button.value[0].contents))
     systems = pd.read_csv(io.BytesIO(systems_file_button.value[0].contents))
@@ -108,6 +118,8 @@ def _(mo):
 
 @app.cell
 def _(buildings, mo, systems, to_snake_case_inplace):
+
+
     # Convert the column names
     to_snake_case_inplace(buildings)
     to_snake_case_inplace(systems)
